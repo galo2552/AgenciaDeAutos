@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$password = (string) ($_POST['password'] ?? '');
 
 	if ($email === '' || $password === '') {
-		set_flash('error', 'Completa email y contrasena.');
+		set_flash('error', 'Completa email y contraseña.');
 		redirect('log/login.php');
 	}
 

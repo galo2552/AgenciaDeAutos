@@ -31,6 +31,7 @@ try {
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $id = $_POST['id'] ?? null;
+		$isEdicion = !empty($id);
 
 		$nombre = trim((string) ($_POST['nombre'] ?? ''));
 		$email = trim((string) ($_POST['email'] ?? ''));
@@ -49,68 +50,51 @@ try {
 			throw new InvalidArgumentException('Rol invalido.');
 		}
 
-        if ($id) {
+		if ($password !== '' && strlen($password) < 6) {
+			throw new InvalidArgumentException('La contraseña debe tener al menos 6 caracteres.');
+		}
 
-            if ($password !== '' && strlen($password) < 6) {
-                throw new InvalidArgumentException('La contrasena debe tener al menos 6 caracteres.');
-            }
+		if (!$isEdicion && $password === '') {
+			throw new InvalidArgumentException('La contraseña es obligatoria.');
+		}
 
-            if ($password !== '') {
-                $hash = password_hash($password, PASSWORD_DEFAULT);
+		if ($isEdicion) {
+			$params = [
+				'id' => $id,
+				'nombre' => $nombre,
+				'email' => $email,
+				'rol' => $rol,
+			];
 
-                $stmt = $db->prepare("
-                    UPDATE usuarios 
-                    SET nombre = :nombre, email = :email, password = :password, rol = :rol
-                    WHERE id = :id
-                ");
+			if ($password !== '') {
+				$params['password'] = password_hash($password, PASSWORD_DEFAULT);
+				$sql = "
+					UPDATE usuarios 
+					SET nombre = :nombre, email = :email, password = :password, rol = :rol
+					WHERE id = :id
+				";
+			} else {
+				$sql = "
+					UPDATE usuarios 
+					SET nombre = :nombre, email = :email, rol = :rol
+					WHERE id = :id
+				";
+			}
 
-                $stmt->execute([
-                    'id' => $id,
-                    'nombre' => $nombre,
-                    'email' => $email,
-                    'password' => $hash,
-                    'rol' => $rol,
-                ]);
-            } else {
-                $stmt = $db->prepare("
-                    UPDATE usuarios 
-                    SET nombre = :nombre, email = :email, rol = :rol
-                    WHERE id = :id
-                ");
+			$stmt = $db->prepare($sql);
+			$stmt->execute($params);
+			set_flash('success', 'Usuario actualizado.');
+		} else {
+			$stmt = $db->prepare('INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :password, :rol)');
+			$stmt->execute([
+				'nombre' => $nombre,
+				'email' => $email,
+				'password' => password_hash($password, PASSWORD_DEFAULT),
+				'rol' => $rol,
+			]);
 
-                $stmt->execute([
-                    'id' => $id,
-                    'nombre' => $nombre,
-                    'email' => $email,
-                    'rol' => $rol,
-                ]);
-            }
-
-            set_flash('success', 'Usuario actualizado.');
-        }
-
-        else {
-
-            if ($password === '') {
-                throw new InvalidArgumentException('La contrasena es obligatoria.');
-            }
-
-            if (strlen($password) < 6) {
-                throw new InvalidArgumentException('La contrasena debe tener al menos 6 caracteres.');
-            }
-
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-
-            $stmt = $db->prepare('INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :password, :rol)');
-            $stmt->execute([
-                'nombre' => $nombre,
-                'email' => $email,
-                'password' => $hash,
-                'rol' => $rol,
-            ]);
-
-            set_flash('success', 'Usuario creado correctamente.');
-        }
+			set_flash('success', 'Usuario creado correctamente.');
+		}
 
 		redirect('admin/usuarios.php');
 	}
@@ -140,7 +124,7 @@ require_once __DIR__ . '/../components/header.php';
 		<input id="email" name="email" type="email" required
         value="<?= htmlspecialchars($usuarioEditar['email'] ?? '') ?>">
 
-		<label for="password">Contrasena</label>
+		<label for="password">Contraseña</label>
 		<input id="password" name="password" type="password" minlength="6"
         <?= $usuarioEditar ? '' : 'required' ?>
         placeholder="<?= $usuarioEditar ? 'Dejar vacio para no cambiar' : '' ?>">
