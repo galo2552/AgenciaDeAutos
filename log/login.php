@@ -36,17 +36,11 @@ require_once __DIR__ . '/../components/header.php';
 		<label for="email">Email</label>
 		<input id="email" name="email" type="email" required>
 
-		<label for="password">Contrasena</label>
+		<label for="password">Contraseña</label>
 		<input id="password" name="password" type="password" required>
 
 		<button type="submit" class="btn">Ingresar</button>
 	</form>
-
-	<div class="demo-info">
-		<p>Admin: admin@agencia.com</p>
-		<p>Empleado: empleado@agencia.com</p>
-		<p>Clave para ambos: password</p>
-	</div>
 </section>
 
 <?php require_once __DIR__ . '/../components/footer.php'; ?>
