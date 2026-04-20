@@ -17,17 +17,22 @@ $flash = get_flash();
 <body>
 	<header class="site-header">
 		<div class="container topbar">
-			<a href="<?= htmlspecialchars(app_url('pages/inicio.php')) ?>" class="brand">Agencia de Autos</a>
-			<?php if ($usuario): ?>
-				<nav class="nav">
-					<a href="<?= htmlspecialchars(app_url('pages/inicio.php')) ?>">Inicio</a>
-					<a href="<?= htmlspecialchars(app_url('pages/vehiculos.php')) ?>">Vehiculos</a>
+			<a href="<?= htmlspecialchars(app_url($usuario ? 'pages/inicio.php' : 'pages/catalogo.php')) ?>" class="brand">
+				Agencia de Autos
+			</a>
+			<nav class="nav">
+				<a href="<?= htmlspecialchars(app_url('pages/catalogo.php')) ?>">Catálogo</a>
+				<?php if ($usuario): ?>
+					<a href="<?= htmlspecialchars(app_url('pages/inicio.php')) ?>">Panel</a>
+					<a href="<?= htmlspecialchars(app_url('pages/vehiculos.php')) ?>">Vehículos</a>
 					<?php if (Auth::isAdmin()): ?>
 						<a href="<?= htmlspecialchars(app_url('admin/usuarios.php')) ?>">Usuarios</a>
 					<?php endif; ?>
 					<a href="<?= htmlspecialchars(app_url('log/logout.php')) ?>">Salir</a>
-				</nav>
-			<?php endif; ?>
+				<?php else: ?>
+					<a href="<?= htmlspecialchars(app_url('log/login.php')) ?>" class="btn btn-nav-login">Iniciar sesión</a>
+				<?php endif; ?>
+			</nav>
 		</div>
 	</header>
 

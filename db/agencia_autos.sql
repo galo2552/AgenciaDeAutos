@@ -19,6 +19,7 @@ CREATE TABLE vehiculos (
     modelo VARCHAR(100) NOT NULL,
     anio INT NOT NULL,
     precio DECIMAL(12,2) NOT NULL,
+    imagen VARCHAR(255) DEFAULT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT chk_anio CHECK (anio >= 1900),
@@ -30,8 +31,8 @@ INSERT INTO usuarios (nombre, email, password, rol) VALUES
 ('Administrador General', 'admin@agencia.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'administrador'),
 ('Empleado Demo', 'empleado@agencia.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'empleado');
 
-INSERT INTO vehiculos (marca, modelo, anio, precio) VALUES
-('Toyota', 'Corolla', 2021, 18500.00),
-('Volkswagen', 'Vento', 2020, 17300.00),
-('Ford', 'Ranger', 2022, 31800.00),
-('Chevrolet', 'Onix', 2019, 12900.00);
+INSERT INTO vehiculos (marca, modelo, anio, precio, imagen) VALUES
+('Toyota', 'Corolla', 2021, 18500.00, NULL),
+('Volkswagen', 'Vento', 2020, 17300.00, NULL),
+('Ford', 'Ranger', 2022, 31800.00, NULL),
+('Chevrolet', 'Onix', 2019, 12900.00, NULL);

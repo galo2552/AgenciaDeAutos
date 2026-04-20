@@ -7,4 +7,4 @@ if (Auth::check()) {
     redirect('pages/inicio.php');
 }
 
-redirect('log/login.php');
+redirect('pages/catalogo.php');
