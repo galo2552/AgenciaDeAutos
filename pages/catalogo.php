@@ -5,7 +5,36 @@ require_once __DIR__ . '/../components/conf/conf.php';
 
 $db = db();
 
-$stmt = $db->query('SELECT id, marca, modelo, anio, precio, imagen FROM vehiculos ORDER BY id DESC');
+$filtroBuscar = trim((string) ($_GET['buscar'] ?? ''));
+$filtroAnio = trim((string) ($_GET['anio'] ?? ''));
+$filtroPrecioMax = trim((string) ($_GET['precio_max'] ?? ''));
+
+$where = [];
+$params = [];
+
+if ($filtroBuscar !== '') {
+	$where[] = '(marca LIKE :buscar OR modelo LIKE :buscar)';
+	$params['buscar'] = '%' . $filtroBuscar . '%';
+}
+
+if ($filtroAnio !== '' && ctype_digit($filtroAnio) && Auto::esAnioValido((int) $filtroAnio)) {
+	$where[] = 'anio = :anio';
+	$params['anio'] = (int) $filtroAnio;
+}
+
+if ($filtroPrecioMax !== '' && is_numeric($filtroPrecioMax)) {
+	$where[] = 'precio <= :precio_max';
+	$params['precio_max'] = (float) $filtroPrecioMax;
+}
+
+$sql = 'SELECT id, marca, modelo, anio, precio, imagen FROM vehiculos';
+if (count($where) > 0) {
+	$sql .= ' WHERE ' . implode(' AND ', $where);
+}
+$sql .= ' ORDER BY id DESC';
+
+$stmt = $db->prepare($sql);
+$stmt->execute($params);
 $autos = [];
 while ($row = $stmt->fetch()) {
 	$autos[] = Auto::fromRow($row);
@@ -17,6 +46,30 @@ require_once __DIR__ . '/../components/header.php';
 <section class="hero catalogo-hero">
 	<h2>Catálogo de Vehículos</h2>
 	<p>Explorá nuestra selección de autos disponibles. Sin necesidad de registro.</p>
+</section>
+
+<section class="panel catalogo-filtros-panel">
+	<form method="get" class="form-grid filtros-grid catalogo-filtros-grid">
+		<label for="buscar">Buscar</label>
+		<input id="buscar" name="buscar" type="text"
+			value="<?= htmlspecialchars($filtroBuscar) ?>"
+			placeholder="Marca o modelo">
+
+		<label for="anio">Año</label>
+		<input id="anio" name="anio" type="number" min="1900" max="2100"
+			value="<?= htmlspecialchars($filtroAnio) ?>"
+			placeholder="Ej: 2023">
+
+		<label for="precio_max">Precio máximo</label>
+		<input id="precio_max" name="precio_max" type="number" min="0" step="0.01"
+			value="<?= htmlspecialchars($filtroPrecioMax) ?>"
+			placeholder="Ej: 35000">
+
+		<div class="filtros-actions">
+			<button type="submit" class="btn btn-small">Aplicar filtros</button>
+			<a href="<?= htmlspecialchars(app_url('pages/catalogo.php')) ?>" class="btn btn-secondary btn-small">Limpiar</a>
+		</div>
+	</form>
 </section>
 
 <?php if (count($autos) === 0): ?>

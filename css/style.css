@@ -1,14 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap');
+
 :root {
-	--bg: #f4f7fb;
-	--panel: #ffffff;
-	--text: #10243e;
-	--soft: #5d6f86;
-	--brand: #0f5ea8;
-	--brand-dark: #0a4d8c;
-	--ok: #1f8a4c;
-	--err: #b23a3a;
-	--border: #d8e2ef;
-	--shadow: 0 14px 28px rgba(18, 61, 106, 0.1);
+	--bg: #f2f4f1;
+	--panel: rgba(250, 251, 248, 0.88);
+	--panel-strong: #ffffff;
+	--text: #18211f;
+	--soft: #5c6763;
+	--brand: #0f766e;
+	--brand-dark: #0b5d57;
+	--ok: #177245;
+	--err: #b8473c;
+	--border: #d4ddd8;
+	--shadow: 0 18px 40px rgba(12, 42, 35, 0.1);
 }
 
 * {
@@ -17,9 +20,13 @@
 
 body {
 	margin: 0;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-family: "Manrope", "Segoe UI", sans-serif;
 	color: var(--text);
-	background: radial-gradient(circle at top right, #e8f2ff 0%, var(--bg) 45%);
+	background:
+		radial-gradient(circle at 8% -10%, #d8efe4 0%, transparent 30%),
+		radial-gradient(circle at 96% 6%, #d8e6f7 0%, transparent 32%),
+		linear-gradient(145deg, #eef1ea 0%, var(--bg) 46%, #edf1ee 100%);
+	line-height: 1.55;
 }
 
 .container {
@@ -31,10 +38,10 @@ body {
 	position: sticky;
 	top: 0;
 	z-index: 10;
-	background: rgba(255, 255, 255, 0.93);
+	background: rgba(248, 250, 247, 0.76);
 	border-bottom: 1px solid var(--border);
-	-webkit-backdrop-filter: blur(6px);
-	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
 }
 
 .topbar {
@@ -47,7 +54,8 @@ body {
 
 .brand {
 	font-size: clamp(1.1rem, 3.2vw, 1.45rem);
-	font-weight: 800;
+	font-family: "Sora", "Manrope", sans-serif;
+	font-weight: 700;
 	letter-spacing: 0.4px;
 	text-decoration: none;
 	color: var(--brand-dark);
@@ -65,13 +73,13 @@ body {
 	color: var(--text);
 	font-weight: 600;
 	border: 1px solid transparent;
-	border-radius: 10px;
+	border-radius: 999px;
 	padding: 8px 11px;
 }
 
 .nav a:hover {
 	border-color: var(--border);
-	background: #f8fbff;
+	background: rgba(255, 255, 255, 0.75);
 }
 
 .main-content {
@@ -83,8 +91,10 @@ body {
 .card,
 .login-box {
 	background: var(--panel);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
 	border: 1px solid var(--border);
-	border-radius: 16px;
+	border-radius: 18px;
 	box-shadow: var(--shadow);
 }
 
@@ -110,12 +120,15 @@ body {
 	margin: 0 0 8px;
 	font-size: 0.98rem;
 	color: var(--soft);
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
 }
 
 .metric {
 	margin: 0;
 	font-size: clamp(1.25rem, 3vw, 1.8rem);
 	font-weight: 800;
+	font-family: "Sora", "Manrope", sans-serif;
 }
 
 .actions-row {
@@ -163,17 +176,17 @@ button {
 
 input,
 select {
-	border: 1px solid #bfd0e4;
+	border: 1px solid #bfd2ca;
 	border-radius: 10px;
 	min-height: 42px;
 	padding: 10px 12px;
-	background: #fff;
+	background: rgba(255, 255, 255, 0.9);
 }
 
 input:focus,
 select:focus {
-	outline: 2px solid #acd0f5;
-	border-color: #8fbce8;
+	outline: 2px solid #a9d7cc;
+	border-color: #7fb8aa;
 }
 
 .btn,
@@ -183,26 +196,29 @@ button {
 	justify-content: center;
 	text-decoration: none;
 	border: none;
-	border-radius: 10px;
+	border-radius: 12px;
 	min-height: 42px;
 	padding: 10px 14px;
 	cursor: pointer;
 	color: #fff;
-	background: var(--brand);
+	background: linear-gradient(140deg, #11867d 0%, var(--brand) 100%);
 	font-weight: 700;
+	transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
 }
 
 .btn:hover,
 button:hover {
-	background: var(--brand-dark);
+	background: linear-gradient(140deg, #0f7a72 0%, var(--brand-dark) 100%);
+	transform: translateY(-1px);
+	box-shadow: 0 10px 20px rgba(15, 118, 110, 0.22);
 }
 
 .btn-secondary {
-	background: #6e8098;
+	background: linear-gradient(140deg, #6b7d77 0%, #5f726c 100%);
 }
 
 .btn-secondary:hover {
-	background: #5f7188;
+	background: linear-gradient(140deg, #5f716b 0%, #55655f 100%);
 }
 
 .btn-danger {
@@ -238,8 +254,8 @@ td {
 }
 
 th {
-	background: #eff5fc;
-	color: #1a3a5f;
+	background: #e9f0ed;
+	color: #1e3b35;
 }
 
 .actions {
@@ -260,20 +276,20 @@ th {
 }
 
 .alert-success {
-	background: #e7f8ee;
-	border: 1px solid #b7ebca;
+	background: #e6f7ed;
+	border: 1px solid #b9e7c9;
 	color: #136837;
 }
 
 .alert-error {
-	background: #fdecec;
-	border: 1px solid #f5c4c4;
+	background: #fdeeed;
+	border: 1px solid #f2c9c6;
 	color: #8f1f1f;
 }
 
 .site-footer {
 	border-top: 1px solid var(--border);
-	background: #fff;
+	background: rgba(248, 250, 247, 0.78);
 }
 
 .footer-inner {
@@ -360,6 +376,16 @@ th {
 	padding: clamp(20px, 3vw, 36px);
 }
 
+.catalogo-filtros-panel {
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+.catalogo-filtros-grid {
+	grid-template-columns: 2fr 1fr 1fr auto;
+	margin-bottom: 0;
+}
+
 .catalogo-hero h2 {
 	margin: 0 0 8px;
 	font-size: clamp(1.4rem, 3.5vw, 2rem);
@@ -378,7 +404,7 @@ th {
 }
 
 .auto-card {
-	background: var(--panel);
+	background: var(--panel-strong);
 	border: 1px solid var(--border);
 	border-radius: 16px;
 	box-shadow: var(--shadow);
@@ -390,7 +416,7 @@ th {
 
 .auto-card:hover {
 	transform: translateY(-3px);
-	box-shadow: 0 18px 36px rgba(18,61,106,.13);
+	box-shadow: 0 22px 36px rgba(16, 58, 50, 0.18);
 }
 
 .auto-card-img {
@@ -440,7 +466,7 @@ th {
 .auto-card-titulo {
 	margin: 0;
 	font-size: 1.05rem;
-	color: var(--brand-dark);
+	color: #1d4a41;
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
@@ -470,7 +496,7 @@ th {
 	color: var(--soft);
 	font-size: 0.78rem;
 	text-transform: uppercase;
-	letter-spacing: .5px;
+	letter-spacing: .8px;
 }
 
 .auto-precio {
@@ -488,8 +514,9 @@ th {
 }
 
 .btn-nav-login:hover {
-	background: #f8fbff;
-	border-color: #8fbce8;
+	background: rgba(255, 255, 255, 0.85);
+	border-color: #9fbbb1;
+	box-shadow: none;
 }
 
 .imagen-upload-wrap {
@@ -521,14 +548,14 @@ th {
 	border: 2px dashed var(--border);
 	padding: 10px;
 	border-radius: 10px;
-	background: #f8fbff;
+	background: #f3f8f6;
 	cursor: pointer;
-	min-height: auto;
+	min-height: 0;
 }
 
 .input-file:hover {
-	border-color: #8fbce8;
-	background: #f0f7ff;
+	border-color: #95b9ad;
+	background: #edf6f2;
 }
 
 .input-hint {
